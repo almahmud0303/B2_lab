@@ -134,12 +134,18 @@
             <div class="bg-white p-6 rounded-lg shadow-sm mt-6">
                 <div class="flex justify-between items-center">
                     <a href="{{ route('student.payments.show', $payment->id) }}" 
-                       class="bg-gray-200 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-300">
+                       class="inline-flex items-center px-6 py-3 bg-gray-200 text-gray-800 font-medium rounded-lg hover:bg-gray-300 transition-colors duration-200">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                        </svg>
                         Back to Payment Details
                     </a>
                     
                     <a href="{{ route('student.payments.history') }}" 
-                       class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+                       class="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
                         View Payment History
                     </a>
                 </div>

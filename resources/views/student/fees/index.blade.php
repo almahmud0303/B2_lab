@@ -1,12 +1,16 @@
 <x-student-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Fee Management') }}
-            </h2>
-            <a href="{{ route('student.fees.history') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Payment History
-            </a>
+            <div class="flex space-x-4">
+                <a href="{{ route('student.fees.index') }}" 
+                   class="px-4 py-2 text-blue-600 font-medium border-b-2 border-blue-600">
+                    Fee Management
+                </a>
+                <a href="{{ route('student.payments.history') }}" 
+                   class="px-4 py-2 text-gray-600 hover:text-gray-800 font-medium border-b-2 border-transparent hover:border-gray-300 transition-colors">
+                    Payment History
+                </a>
+            </div>
         </div>
     </x-slot>
 
@@ -140,18 +144,36 @@
                                                 </span>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                <a href="{{ route('student.fees.show', $fee) }}" 
-                                                   class="text-blue-600 hover:text-blue-900 mr-3">View</a>
-                                                
-                                                @if($fee->status !== 'paid')
-                                                    <a href="{{ route('student.fees.payment', $fee) }}" 
-                                                       class="text-green-600 hover:text-green-900 mr-3">Pay</a>
-                                                @endif
-                                                
-                                                @if($fee->paid_amount > 0)
-                                                    <a href="{{ route('student.fees.receipt', $fee) }}" 
-                                                       class="text-purple-600 hover:text-purple-900">Receipt</a>
-                                                @endif
+                                                <div class="flex space-x-2">
+                                                    <a href="{{ route('student.fees.show', $fee) }}" 
+                                                       class="inline-flex items-center px-3 py-1 bg-blue-600 text-white text-xs font-medium rounded-md hover:bg-blue-700 transition-colors duration-200">
+                                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                                        </svg>
+                                                        View
+                                                    </a>
+                                                    
+                                                    @if($fee->status !== 'paid')
+                                                        <a href="{{ route('student.fees.payment', $fee) }}" 
+                                                           class="inline-flex items-center px-3 py-1 bg-green-600 text-white text-xs font-medium rounded-md hover:bg-green-700 transition-colors duration-200">
+                                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                                                            </svg>
+                                                            Pay
+                                                        </a>
+                                                    @endif
+                                                    
+                                                    @if($fee->paid_amount > 0)
+                                                        <a href="{{ route('student.fees.receipt', $fee) }}" 
+                                                           class="inline-flex items-center px-3 py-1 bg-purple-600 text-white text-xs font-medium rounded-md hover:bg-purple-700 transition-colors duration-200">
+                                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                                            </svg>
+                                                            Receipt
+                                                        </a>
+                                                    @endif
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach

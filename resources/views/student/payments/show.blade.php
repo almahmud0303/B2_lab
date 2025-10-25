@@ -131,12 +131,22 @@
                             </div>
                         </div>
                         <div class="mt-6 no-print">
-                            <button onclick="printReceipt()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 mr-3">
-                                Print Receipt
-                            </button>
-                            <a href="{{ route('student.payments.show', $payment->id) }}" class="bg-gray-200 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-300">
-                                Back to Details
-                            </a>
+                            <div class="flex space-x-3">
+                                <button onclick="printReceipt()" 
+                                        class="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                                    </svg>
+                                    Print Receipt
+                                </button>
+                                <a href="{{ route('student.payments.show', $payment->id) }}" 
+                                   class="inline-flex items-center px-6 py-3 bg-gray-200 text-gray-800 font-medium rounded-lg hover:bg-gray-300 transition-colors duration-200">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                                    </svg>
+                                    Back to Details
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -146,18 +156,27 @@
             <div class="bg-white p-6 rounded-lg shadow-sm mt-6">
                 <div class="flex justify-between items-center">
                     <a href="{{ route('student.payments.history') }}" 
-                       class="bg-gray-200 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-300">
+                       class="inline-flex items-center px-6 py-3 bg-gray-200 text-gray-800 font-medium rounded-lg hover:bg-gray-300 transition-colors duration-200">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                        </svg>
                         Back to History
                     </a>
                     
                     @if($payment->status === 'completed')
                         <a href="{{ route('student.payments.show', $payment->id) }}?receipt=1" 
-                           class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700">
+                           class="inline-flex items-center px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors duration-200">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
                             View Receipt
                         </a>
                     @elseif($payment->status === 'pending')
                         <a href="{{ route('student.payments.instructions', $payment->id) }}" 
-                           class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+                           class="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
                             View Instructions
                         </a>
                     @endif
