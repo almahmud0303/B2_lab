@@ -5,12 +5,12 @@
                 {{ __('Exam Management') }}
             </h2>
             <div class="flex space-x-3">
-                <a href="{{ route('student.exams.results') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                <!-- <a href="{{ route('student.exams.results') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
                     View Results
                 </a>
                 <a href="{{ route('student.exams.calendar') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                     Calendar
-                </a>
+                </a> -->
             </div>
         </div>
     </x-slot>

@@ -12,6 +12,7 @@ class Notice extends Model
 
     protected $fillable = [
         'user_id',
+        'department_id',
         'title',
         'content',
         'type',
@@ -38,6 +39,11 @@ class Notice extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
     }
 
     // Scopes
@@ -75,6 +81,14 @@ class Notice extends Model
         return $query->where(function($q) use ($role) {
             $q->whereNull('target_roles')
               ->orWhereJsonContains('target_roles', $role);
+        });
+    }
+
+    public function scopeForDepartment($query, $departmentId)
+    {
+        return $query->where(function($q) use ($departmentId) {
+            $q->whereNull('department_id')
+              ->orWhere('department_id', $departmentId);
         });
     }
 

@@ -5,15 +5,39 @@
             <div class="bg-white shadow-sm sm:rounded-lg p-6">
                 <h2 class="text-2xl font-bold mb-4">Issue Information</h2>
                 <div class="grid grid-cols-2 gap-4">
-                    <div><strong>Student:</strong> {{ $bookIssue->student->user->name }}</div>
-                    <div><strong>Student ID:</strong> {{ $bookIssue->student->student_id }}</div>
-                    <div><strong>Book:</strong> {{ $bookIssue->book->title }}</div>
-                    <div><strong>ISBN:</strong> {{ $bookIssue->book->isbn }}</div>
+                    <div><strong>Student:</strong> 
+                        @if($bookIssue->student && $bookIssue->student->user)
+                            {{ $bookIssue->student->user->name }}
+                        @else
+                            <span class="text-red-500">Student Not Found</span>
+                        @endif
+                    </div>
+                    <div><strong>Student ID:</strong> 
+                        @if($bookIssue->student)
+                            {{ $bookIssue->student->student_id }}
+                        @else
+                            <span class="text-red-500">N/A</span>
+                        @endif
+                    </div>
+                    <div><strong>Book:</strong> 
+                        @if($bookIssue->book)
+                            {{ $bookIssue->book->title }}
+                        @else
+                            <span class="text-red-500">Book Not Found</span>
+                        @endif
+                    </div>
+                    <div><strong>ISBN:</strong> 
+                        @if($bookIssue->book)
+                            {{ $bookIssue->book->isbn }}
+                        @else
+                            <span class="text-red-500">N/A</span>
+                        @endif
+                    </div>
                     <div><strong>Issue Date:</strong> {{ $bookIssue->issue_date?->format('F d, Y') }}</div>
                     <div><strong>Due Date:</strong> {{ $bookIssue->due_date?->format('F d, Y') }}</div>
                     <div><strong>Return Date:</strong> {{ $bookIssue->return_date?->format('F d, Y') ?? 'Not returned' }}</div>
                     <div><strong>Status:</strong> <span class="px-2 py-1 text-xs rounded {{ $bookIssue->status == 'issued' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}">{{ ucfirst($bookIssue->status) }}</span></div>
-                    @if($bookIssue->staff)
+                    @if($bookIssue->staff && $bookIssue->staff->user)
                         <div><strong>Issued By:</strong> {{ $bookIssue->staff->user->name }}</div>
                     @endif
                     @if($bookIssue->notes)

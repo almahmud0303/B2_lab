@@ -40,6 +40,7 @@ class NoticeController extends Controller
             'priority' => 'required|in:low,medium,high,urgent',
             'target_roles' => 'nullable|array',
             'target_roles.*' => 'in:student,teacher,staff,admin',
+            'department_id' => 'nullable|exists:departments,id',
             'publish_date' => 'required|date|after_or_equal:today',
             'expiry_date' => 'nullable|date|after:publish_date',
             'is_published' => 'boolean',
@@ -48,6 +49,7 @@ class NoticeController extends Controller
 
         Notice::create([
             'user_id' => auth()->id(),
+            'department_id' => $request->department_id,
             'title' => $request->title,
             'content' => $request->content,
             'type' => $request->type,

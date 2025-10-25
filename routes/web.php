@@ -15,7 +15,6 @@ use App\Http\Controllers\Student\DashboardController as StudentDashboardControll
 use App\Http\Controllers\Teacher\DashboardController as TeacherDashboardController;
 use App\Http\Controllers\Staff\DashboardController as StaffDashboardController;
 use App\Http\Controllers\Staff\LibraryController;
-use App\Http\Controllers\Staff\HallController;
 use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 
@@ -408,10 +407,6 @@ Route::prefix('staff')->name('staff.')->middleware(['auth', 'role:staff', 'preve
         Route::get('/', [App\Http\Controllers\Staff\NoticeController::class, 'index'])->name('notices.index');
         Route::get('/{notice}', [App\Http\Controllers\Staff\NoticeController::class, 'show'])->name('notices.show');
     });
-    
-    // Halls routes (existing)
-    Route::resource('halls', HallController::class);
-    Route::patch('halls/{hall}/toggle-availability', [HallController::class, 'toggleAvailability'])->name('halls.toggle-availability');
 });
 
 // Department Head Routes (for teachers who are department heads)
@@ -448,6 +443,27 @@ Route::prefix('department-head')->name('department-head.')->middleware(['auth', 
         Route::post('/bulk-assign', [App\Http\Controllers\DepartmentHead\CourseAssignmentController::class, 'bulkAssign'])->name('bulk-assign');
         Route::get('/workload-report', [App\Http\Controllers\DepartmentHead\CourseAssignmentController::class, 'workloadReport'])->name('workload-report');
     });
+    
+    // Exam routes for department heads
+    Route::prefix('exams')->group(function () {
+        Route::get('/', [App\Http\Controllers\DepartmentHead\ExamController::class, 'index'])->name('exams.index');
+        Route::get('/create', [App\Http\Controllers\DepartmentHead\ExamController::class, 'create'])->name('exams.create');
+        Route::post('/store', [App\Http\Controllers\DepartmentHead\ExamController::class, 'store'])->name('exams.store');
+        Route::get('/{exam}', [App\Http\Controllers\DepartmentHead\ExamController::class, 'show'])->name('exams.show');
+        Route::get('/{exam}/edit', [App\Http\Controllers\DepartmentHead\ExamController::class, 'edit'])->name('exams.edit');
+        Route::put('/{exam}/update', [App\Http\Controllers\DepartmentHead\ExamController::class, 'update'])->name('exams.update');
+        Route::delete('/{exam}', [App\Http\Controllers\DepartmentHead\ExamController::class, 'destroy'])->name('exams.destroy');
+        Route::get('/{exam}/enter-marks', [App\Http\Controllers\DepartmentHead\ExamController::class, 'enterMarks'])->name('exams.enter-marks');
+        Route::post('/{exam}/save-marks', [App\Http\Controllers\DepartmentHead\ExamController::class, 'saveMarks'])->name('exams.save-marks');
+    });
+    
+    // Student routes for department heads
+    Route::prefix('students')->group(function () {
+        Route::get('/', [App\Http\Controllers\DepartmentHead\StudentController::class, 'index'])->name('students.index');
+        Route::get('/search', [App\Http\Controllers\DepartmentHead\StudentController::class, 'search'])->name('students.search');
+        Route::get('/{student}', [App\Http\Controllers\DepartmentHead\StudentController::class, 'show'])->name('students.show');
+        Route::get('/{student}/academic-record', [App\Http\Controllers\DepartmentHead\StudentController::class, 'academicRecord'])->name('students.academic-record');
+    });
 });
 
 Route::middleware('auth')->group(function () {
@@ -458,9 +474,5 @@ Route::middleware('auth')->group(function () {
 
 // Payment callback routes (outside middleware for external access)
 Route::post('/payment/callback', [PaymentController::class, 'callback'])->name('payment.callback');
-Route::get('/payment/bkash-test/{paymentId}', [PaymentController::class, 'bkashTest'])->name('payment.bkash-test');
-
-// bKash API test route (for debugging)
-Route::get('/test-bkash', [PaymentController::class, 'testBkash'])->name('test.bkash');
 
 require __DIR__.'/auth.php';

@@ -31,7 +31,13 @@
                         <tbody>
                             @foreach($book->bookIssues as $issue)
                                 <tr class="border-b">
-                                    <td class="py-2">{{ $issue->student->user->name }}</td>
+                                    <td class="py-2">
+                                        @if($issue->student && $issue->student->user)
+                                            {{ $issue->student->user->name }}
+                                        @else
+                                            <span class="text-red-500">Student Not Found</span>
+                                        @endif
+                                    </td>
                                     <td class="py-2">{{ $issue->issue_date?->format('Y-m-d') }}</td>
                                     <td class="py-2">{{ $issue->due_date?->format('Y-m-d') }}</td>
                                     <td class="py-2">{{ ucfirst($issue->status) }}</td>

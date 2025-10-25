@@ -4,20 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Payment;
 use App\Models\Course;
-use App\Services\BkashPaymentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class PaymentController extends Controller
 {
-    protected $bkashService;
-
-    public function __construct(BkashPaymentService $bkashService)
-    {
-        $this->bkashService = $bkashService;
-    }
-
     /**
      * Show payment form for a course or fee
      */
@@ -132,8 +124,8 @@ class PaymentController extends Controller
         }
 
         $request->validate([
-            'payment_method' => 'required|in:bkash,nagad,rocket,bank_transfer,cash',
-            'phone_number' => 'required_if:payment_method,bkash,nagad,rocket|nullable|string|max:15',
+            'payment_method' => 'required|in:nagad,rocket,bank_transfer,cash',
+            'phone_number' => 'required_if:payment_method,nagad,rocket|nullable|string|max:15',
             'notes' => 'nullable|string|max:500',
         ]);
 
@@ -178,7 +170,7 @@ class PaymentController extends Controller
         ]);
 
         // Handle different payment methods
-        if (in_array($request->payment_method, ['bkash', 'nagad', 'rocket'])) {
+        if (in_array($request->payment_method, ['nagad', 'rocket'])) {
             return $this->processMobilePayment($payment);
         } elseif ($request->payment_method === 'bank_transfer') {
             return $this->processBankTransfer($payment);
@@ -195,8 +187,8 @@ class PaymentController extends Controller
         $request->validate([
             'fee_id' => 'required|exists:fees,id',
             'amount' => 'required|numeric|min:0.01',
-            'payment_method' => 'required|in:bkash,nagad,rocket,bank_transfer,cash',
-            'phone_number' => 'required_if:payment_method,bkash,nagad,rocket|nullable|string|max:15',
+            'payment_method' => 'required|in:nagad,rocket,bank_transfer,cash',
+            'phone_number' => 'required_if:payment_method,nagad,rocket|nullable|string|max:15',
             'notes' => 'nullable|string|max:500',
             'terms_accepted' => 'required|accepted',
         ]);
@@ -238,7 +230,7 @@ class PaymentController extends Controller
         ]);
 
         // Handle different payment methods
-        if (in_array($request->payment_method, ['bkash', 'nagad', 'rocket'])) {
+        if (in_array($request->payment_method, ['nagad', 'rocket'])) {
             return $this->processMobilePayment($payment);
         } elseif ($request->payment_method === 'bank_transfer') {
             return $this->processBankTransfer($payment);
@@ -248,17 +240,22 @@ class PaymentController extends Controller
     }
 
     /**
-     * Process mobile payment (bKash, Nagad, Rocket)
+     * Process mobile payment (Nagad, Rocket)
      */
     private function processMobilePayment($payment)
     {
         try {
-            if ($payment->payment_method === 'bkash') {
-                return $this->processBkashPayment($payment);
-            } else {
-                // For Nagad and Rocket, we'll simulate the process
-                return $this->processOtherMobilePayment($payment);
-            }
+            $payment->update([
+                'status' => 'processing',
+                'gateway_response' => json_encode([
+                    'method' => $payment->payment_method,
+                    'phone' => $payment->phone_number,
+                    'amount' => $payment->amount,
+                    'created_at' => now()->toISOString()
+                ])
+            ]);
+            
+            return redirect()->route('student.payments.instructions', $payment->id);
         } catch (\Exception $e) {
             \Log::error('Mobile payment processing error: ' . $e->getMessage());
             $payment->update([
@@ -267,73 +264,6 @@ class PaymentController extends Controller
             ]);
             return redirect()->back()->with('error', 'Payment processing failed. Please try again.');
         }
-    }
-
-    /**
-     * Process bKash payment
-     */
-    private function processBkashPayment($payment)
-    {
-        \Log::info('Processing bKash payment', [
-            'payment_id' => $payment->id,
-            'amount' => $payment->amount,
-            'payment_reference' => $payment->payment_id
-        ]);
-
-        $result = $this->bkashService->createPayment(
-            $payment->amount,
-            $payment->payment_id,
-            url('/payment/callback')
-        );
-
-        if (isset($result['success']) && $result['success']) {
-            $payment->update([
-                'gateway_response' => json_encode($result),
-                'status' => 'processing',
-            ]);
-
-            \Log::info('bKash payment initiated successfully', [
-                'payment_id' => $payment->id,
-                'bkash_url' => $result['bkashURL']
-            ]);
-
-            // Always redirect to the bKash web URL as requested
-            return redirect($result['bkashURL']);
-        } else {
-            $orderMessage = $result['error'] ?? 'Payment initiation failed';
-            
-            \Log::error('bKash payment initiation failed', [
-                'payment_id' => $payment->id,
-                'error' => $orderMessage,
-                'result' => $result
-            ]);
-
-            $payment->update([
-                'status' => 'failed',
-                'gateway_response' => json_encode($result)
-            ]);
-            
-            return redirect()->back()->with('error', $orderMessage . '. Please try again.');
-        }
-    }
-
-
-    /**
-     * Process other mobile payments (Nagad, Rocket)
-     */
-    private function processOtherMobilePayment($payment)
-    {
-        $payment->update([
-            'status' => 'processing',
-            'gateway_response' => json_encode([
-                'method' => $payment->payment_method,
-                'phone' => $payment->phone_number,
-                'amount' => $payment->amount,
-                'created_at' => now()->toISOString()
-            ])
-        ]);
-        
-        return redirect()->route('student.payments.instructions', $payment->id);
     }
 
     /**
@@ -355,7 +285,7 @@ class PaymentController extends Controller
     }
 
     /**
-     * Payment callback from bKash
+     * Payment callback (simplified without bKash)
      */
     public function callback(Request $request)
     {
@@ -382,40 +312,18 @@ class PaymentController extends Controller
             }
 
             if ($status === 'success' && $payment->status === 'processing') {
-                // Execute payment
-                $result = $this->bkashService->executePayment($paymentID);
-                
-                if (isset($result['success']) && $result['success']) {
-                    $payment->update([
-                        'status' => 'completed',
-                        'transaction_id' => $result['transactionID'] ?? null,
-                        'paid_at' => now(),
-                        'gateway_response' => json_encode(array_merge(
-                            $payment->gateway_response ? json_decode($payment->gateway_response, true) : [],
-                            ['callback_response' => $result]
-                        )),
-                    ]);
+                $payment->update([
+                    'status' => 'completed',
+                    'transaction_id' => $paymentID,
+                    'paid_at' => now(),
+                ]);
 
-                    // Update fee status if this is a fee payment
-                    $this->updateFeeStatus($payment);
+                // Update fee status if this is a fee payment
+                $this->updateFeeStatus($payment);
 
-                    \Log::info('Payment completed successfully', ['payment_id' => $payment->id]);
-                    return redirect()->route('student.payments.success', $payment->id)
-                        ->with('success', 'Payment completed successfully!');
-                } else {
-                    $errorMessage = $result['error'] ?? 'Payment execution failed';
-                    $payment->update([
-                        'status' => 'failed',
-                        'gateway_response' => json_encode(array_merge(
-                            $payment->gateway_response ? json_decode($payment->gateway_response, true) : [],
-                            ['callback_error' => $result]
-                        ))
-                    ]);
-                    
-                    \Log::error('Payment execution failed', ['payment_id' => $payment->id, 'error' => $errorMessage]);
-                    return redirect()->route('student.payments.failed', $payment->id)
-                        ->with('error', 'Payment failed: ' . $errorMessage);
-                }
+                \Log::info('Payment completed successfully', ['payment_id' => $payment->id]);
+                return redirect()->route('student.payments.success', $payment->id)
+                    ->with('success', 'Payment completed successfully!');
             } elseif ($status === 'cancel') {
                 $payment->update(['status' => 'cancelled']);
                 \Log::info('Payment cancelled by user', ['payment_id' => $payment->id]);
@@ -521,62 +429,6 @@ class PaymentController extends Controller
             ->findOrFail($paymentId);
 
         return view('student.payments.show', compact('payment'));
-    }
-
-
-    /**
-     * Test bKash API connection (for debugging)
-     */
-    public function testBkash()
-    {
-        try {
-            // Test token generation
-            $token = $this->bkashService->getToken();
-            
-            if ($token) {
-                return response()->json([
-                    'success' => true,
-                    'message' => 'bKash API connection successful',
-                    'token_available' => true,
-                    'config' => [
-                        'base_url' => config('bkash.base_url'),
-                        'app_key_set' => !empty(config('bkash.app_key')),
-                        'callback_url' => config('bkash.callback_url')
-                    ]
-                ]);
-            } else {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'bKash API token generation failed',
-                    'config' => [
-                        'base_url' => config('bkash.base_url'),
-                        'app_key_set' => !empty(config('bkash.app_key'))
-                    ]
-                ]);
-            }
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'bKash API test failed: ' . $e->getMessage()
-            ]);
-        }
-    }
-
-    /**
-     * Simulate bKash payment for testing
-     */
-    public function bkashTest($paymentId)
-    {
-        // Find the payment record
-        $payment = Payment::where('payment_id', $paymentId)->first();
-        
-        if (!$payment) {
-            return view('student.payments.failed', [
-                'message' => 'Payment not found'
-            ]);
-        }
-
-        return view('student.payments.bkash-test', compact('payment', 'paymentId'));
     }
 
     /**

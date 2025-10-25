@@ -32,8 +32,19 @@ class HallController extends Controller
      */
     public function store(Request $request)
     {
+        // Custom validation for name uniqueness
+        $existingHall = Hall::where('name', $request->name)
+            ->whereNull('deleted_at')
+            ->first();
+            
+        if ($existingHall) {
+            return redirect()->back()
+                ->withErrors(['name' => 'The name has already been taken.'])
+                ->withInput();
+        }
+
         $request->validate([
-            'name' => 'required|string|max:255|unique:halls,name',
+            'name' => 'required|string|max:255',
             'capacity' => 'required|integer|min:1',
             'description' => 'nullable|string|max:1000',
             'location' => 'nullable|string|max:255',
@@ -49,8 +60,8 @@ class HallController extends Controller
             'description' => $request->description,
             'location' => $request->location,
             'facilities' => $request->facilities ?: [],
-            'is_available' => $request->has('is_available'),
-            'is_active' => $request->has('is_active'),
+            'is_available' => $request->boolean('is_available'),
+            'is_active' => $request->boolean('is_active'),
         ]);
 
         return redirect()->route('admin.halls.index')->with('success', 'Hall created successfully.');
@@ -83,8 +94,17 @@ class HallController extends Controller
      */
     public function update(Request $request, Hall $hall)
     {
+        // Log the request for debugging
+        \Log::info('Hall update request received', [
+            'hall_id' => $hall->id,
+            'hall_name' => $hall->name,
+            'request_data' => $request->all(),
+            'request_method' => $request->method()
+        ]);
+
+        // Simple validation without uniqueness check for now
         $request->validate([
-            'name' => 'required|string|max:255|unique:halls,name,' . $hall->id,
+            'name' => 'required|string|max:255',
             'capacity' => 'required|integer|min:1',
             'description' => 'nullable|string|max:1000',
             'location' => 'nullable|string|max:255',
@@ -94,15 +114,20 @@ class HallController extends Controller
             'is_active' => 'boolean',
         ]);
 
-        $hall->update([
-            'name' => $request->name,
-            'capacity' => $request->capacity,
-            'description' => $request->description,
-            'location' => $request->location,
-            'facilities' => $request->facilities ?: [],
-            'is_available' => $request->has('is_available'),
-            'is_active' => $request->has('is_active'),
-        ]);
+        \Log::info('Validation passed, updating hall', ['hall_id' => $hall->id]);
+
+        // Update the hall
+        $hall->name = $request->name;
+        $hall->capacity = $request->capacity;
+        $hall->description = $request->description;
+        $hall->location = $request->location;
+        $hall->facilities = $request->facilities ?: [];
+        $hall->is_available = $request->boolean('is_available');
+        $hall->is_active = $request->boolean('is_active');
+        
+        $hall->save();
+
+        \Log::info('Hall updated successfully', ['hall_id' => $hall->id]);
 
         return redirect()->route('admin.halls.index')->with('success', 'Hall updated successfully.');
     }

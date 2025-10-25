@@ -8,9 +8,9 @@
                 <a href="{{ route('student.library.my-books') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                     My Books
                 </a>
-                <a href="{{ route('student.library.history') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                <!-- <a href="{{ route('student.library.history') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
                     History
-                </a>
+                </a> -->
             </div>
         </div>
     </x-slot>

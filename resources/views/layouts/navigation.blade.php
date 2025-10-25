@@ -54,8 +54,8 @@
                             </x-nav-link>
                         @elseif(auth()->user()->isStaff())
                             <x-nav-link :href="route('staff.dashboard')" :active="request()->routeIs('staff.*')">
-                                {{ __('Dashboard') }}
-                            </x-nav-link>
+                        {{ __('Dashboard') }}
+                    </x-nav-link>
                             <x-nav-link :href="route('staff.library.index')" :active="request()->routeIs('staff.library.*')">
                                 {{ __('Library') }}
                             </x-nav-link>
@@ -158,8 +158,8 @@
                     </x-responsive-nav-link>
                 @elseif(auth()->user()->isStaff())
                     <x-responsive-nav-link :href="route('staff.dashboard')" :active="request()->routeIs('staff.*')">
-                        {{ __('Dashboard') }}
-                    </x-responsive-nav-link>
+                {{ __('Dashboard') }}
+            </x-responsive-nav-link>
                 @endif
             @endauth
         </div>

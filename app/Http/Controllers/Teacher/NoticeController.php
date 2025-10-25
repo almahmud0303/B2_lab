@@ -18,6 +18,10 @@ class NoticeController extends Controller
         }
 
         $notices = Notice::where('is_published', true)
+            ->where(function($query) use ($teacher) {
+                $query->whereNull('department_id')
+                      ->orWhere('department_id', $teacher->department_id);
+            })
             ->where(function($query) {
                 $query->whereNull('target_roles')
                       ->orWhereJsonContains('target_roles', 'teacher')

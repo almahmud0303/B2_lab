@@ -252,13 +252,13 @@ class FeeController extends Controller
         $request->validate([
             'amount' => 'required|numeric|min:0.01|max:' . ($fee->amount - $fee->paid_amount),
             'payment_method' => 'required|string|max:255',
-            'phone_number' => 'required_if:payment_method,bkash,mobile_banking,nagad,rocket|string|max:20',
+            'phone_number' => 'required_if:payment_method,nagad,rocket|string|max:20',
             'notes' => 'nullable|string|max:1000',
             'terms_accepted' => 'required|accepted',
         ]);
 
-        // Convert mobile_banking to bkash for consistency
-        $paymentMethod = $request->payment_method === 'mobile_banking' ? 'bkash' : $request->payment_method;
+        // Use the payment method as provided
+        $paymentMethod = $request->payment_method;
 
         // Redirect to our unified payment system with a dummy courseId for fee payments
         // We'll use courseId = 1 as a placeholder since fees don't have courses

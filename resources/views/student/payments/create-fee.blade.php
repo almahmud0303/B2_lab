@@ -59,7 +59,6 @@
                                 <select name="payment_method" id="payment_method" 
                                         class="w-full border rounded px-4 py-2" required>
                                     <option value="">Select Payment Method</option>
-                                    <option value="bkash" {{ ($formData['payment_method'] == 'bkash' || $formData['payment_method'] == 'mobile_banking') ? 'selected' : '' }}>bKash</option>
                                     <option value="nagad" {{ $formData['payment_method'] == 'nagad' ? 'selected' : '' }}>Nagad</option>
                                     <option value="rocket" {{ $formData['payment_method'] == 'rocket' ? 'selected' : '' }}>Rocket</option>
                                     <option value="bank_transfer" {{ $formData['payment_method'] == 'bank_transfer' ? 'selected' : '' }}>Bank Transfer</option>
@@ -136,7 +135,7 @@
             const phoneField = document.getElementById('phone_number_field');
             const phoneInput = document.getElementById('phone_number');
             
-            if (['bkash', 'nagad', 'rocket'].includes(this.value)) {
+            if (['nagad', 'rocket'].includes(this.value)) {
                 phoneField.style.display = 'block';
                 phoneInput.required = true;
             } else {

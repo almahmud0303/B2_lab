@@ -108,7 +108,7 @@
                                                 <div class="text-sm text-gray-500">by {{ $bookIssue->book->author }}</div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                                {{ $bookIssue->issued_date->format('M d, Y') }}
+                                                {{ $bookIssue->issue_date->format('M d, Y') }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                                 {{ $bookIssue->due_date->format('M d, Y') }}
@@ -125,12 +125,20 @@
                                                 @endif
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                <a href="{{ route('student.library.show', $bookIssue->book) }}" 
-                                                   class="text-blue-600 hover:text-blue-900 mr-3">View</a>
-                                                <a href="{{ route('student.library.renew', $bookIssue) }}" 
-                                                   class="text-green-600 hover:text-green-900 mr-3">Renew</a>
-                                                <a href="{{ route('student.library.return', $bookIssue) }}" 
-                                                   class="text-purple-600 hover:text-purple-900">Return</a>
+                                                <!-- <a href="{{ route('student.library.show', $bookIssue->book) }}" 
+                                                   class="text-blue-600 hover:text-blue-900 mr-3">View</a> -->
+                                                @if($bookIssue->status === 'issued')
+                                                    <form method="POST" action="{{ route('student.library.renew-book', $bookIssue) }}" class="inline">
+                                                        @csrf
+                                                        <button type="submit" class="text-green-600 hover:text-green-900 mr-3">Renew</button>
+                                                    </form>
+                                                    <form method="POST" action="{{ route('student.library.return-book', $bookIssue) }}" class="inline">
+                                                        @csrf
+                                                        <button type="submit" class="text-purple-600 hover:text-purple-900">Return</button>
+                                                    </form>
+                                                @else
+                                                    <span class="text-gray-500">No actions available</span>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
@@ -173,7 +181,7 @@
                                                 <div class="text-sm text-gray-500">by {{ $bookIssue->book->author }}</div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                                {{ $bookIssue->issued_date->format('M d, Y') }}
+                                                {{ $bookIssue->issue_date->format('M d, Y') }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                                 {{ $bookIssue->return_date ? $bookIssue->return_date->format('M d, Y') : 'Not returned' }}
@@ -213,10 +221,10 @@
                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                     Browse Library
                 </a>
-                <a href="{{ route('student.library.history') }}" 
+                <!-- <a href="{{ route('student.library.history') }}" 
                    class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
                     View Full History
-                </a>
+                </a> -->
                 <a href="{{ route('student.dashboard') }}" 
                    class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
                     Back to Dashboard

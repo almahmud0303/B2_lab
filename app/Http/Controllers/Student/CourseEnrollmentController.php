@@ -163,14 +163,18 @@ class CourseEnrollmentController extends Controller
             }
         }
 
-        // All checks passed - enroll the student
-        Enrollment::create([
-            'student_id' => $student->id,
-            'course_id' => $course->id,
-            'enrollment_date' => now(),
-            'status' => 'enrolled',
-            'grade' => null,
-        ]);
+        // All checks passed - enroll the student using updateOrCreate to prevent duplicates
+        Enrollment::updateOrCreate(
+            [
+                'student_id' => $student->id,
+                'course_id' => $course->id,
+            ],
+            [
+                'enrollment_date' => now(),
+                'status' => 'enrolled',
+                'grade' => null,
+            ]
+        );
 
         return back()->with('success', "Successfully enrolled in {$course->title}!");
     }

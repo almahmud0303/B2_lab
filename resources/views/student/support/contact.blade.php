@@ -11,55 +11,7 @@
                 <div class="p-6">
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                         <!-- Contact Form -->
-                        <div>
-                            <h3 class="text-lg font-medium text-gray-900 mb-4">Send us a message</h3>
-                            <form method="POST" action="{{ route('student.support.submit-contact') }}">
-                                @csrf
-                                <div class="space-y-4">
-                                    <div>
-                                        <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-                                        <input type="text" name="name" id="name" value="{{ old('name', Auth::user()->name) }}" 
-                                               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 @error('name') border-red-300 @enderror">
-                                        @error('name')
-                                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                    
-                                    <div>
-                                        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                                        <input type="email" name="email" id="email" value="{{ old('email', Auth::user()->email) }}" 
-                                               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 @error('email') border-red-300 @enderror">
-                                        @error('email')
-                                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                    
-                                    <div>
-                                        <label for="subject" class="block text-sm font-medium text-gray-700">Subject</label>
-                                        <input type="text" name="subject" id="subject" value="{{ old('subject') }}" 
-                                               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 @error('subject') border-red-300 @enderror">
-                                        @error('subject')
-                                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                    
-                                    <div>
-                                        <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
-                                        <textarea name="message" id="message" rows="4" 
-                                                  class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 @error('message') border-red-300 @enderror">{{ old('message') }}</textarea>
-                                        @error('message')
-                                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                    
-                                    <div>
-                                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                            Send Message
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
+                       
                         
                         <!-- Contact Information -->
                         <div>

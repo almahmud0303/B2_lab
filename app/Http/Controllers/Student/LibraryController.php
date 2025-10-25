@@ -311,10 +311,16 @@ class LibraryController extends Controller
             abort(404, 'Student profile not found');
         }
 
-        // Get currently borrowed books
+        // Update overdue books automatically
+        $student->bookIssues()
+            ->where('status', 'issued')
+            ->where('due_date', '<', now())
+            ->update(['status' => 'overdue']);
+
+        // Get currently borrowed books (including overdue)
         $borrowedBooks = $student->bookIssues()
             ->with('book')
-            ->where('status', 'issued')
+            ->whereIn('status', ['issued', 'overdue'])
             ->orderBy('due_date')
             ->get();
 
@@ -328,7 +334,7 @@ class LibraryController extends Controller
         // Get borrowing history
         $history = $student->bookIssues()
             ->with('book')
-            ->orderBy('issued_date', 'desc')
+            ->orderBy('issue_date', 'desc')
             ->paginate(15);
 
         // Calculate statistics

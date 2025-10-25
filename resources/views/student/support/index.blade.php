@@ -9,39 +9,8 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <!-- Quick Help -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                <a href="{{ route('student.support.knowledge-base') }}" 
-                   class="bg-white overflow-hidden shadow-sm sm:rounded-lg hover:shadow-md transition-shadow">
-                    <div class="p-6 text-center">
-                        <svg class="mx-auto h-12 w-12 text-blue-500 mb-4" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <h3 class="text-lg font-medium text-gray-900">Knowledge Base</h3>
-                        <p class="text-sm text-gray-600">Find answers to common questions</p>
-                    </div>
-                </a>
+            
 
-                <a href="{{ route('student.support.tutorials') }}" 
-                   class="bg-white overflow-hidden shadow-sm sm:rounded-lg hover:shadow-md transition-shadow">
-                    <div class="p-6 text-center">
-                        <svg class="mx-auto h-12 w-12 text-green-500 mb-4" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"></path>
-                        </svg>
-                        <h3 class="text-lg font-medium text-gray-900">Video Tutorials</h3>
-                        <p class="text-sm text-gray-600">Watch step-by-step guides</p>
-                    </div>
-                </a>
-
-                <button onclick="toggleSupportTicket()" 
-                        class="bg-white overflow-hidden shadow-sm sm:rounded-lg hover:shadow-md transition-shadow">
-                    <div class="p-6 text-center">
-                        <svg class="mx-auto h-12 w-12 text-purple-500 mb-4" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
-                            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
-                        </svg>
-                        <h3 class="text-lg font-medium text-gray-900">Submit Ticket</h3>
-                        <p class="text-sm text-gray-600">Get help from our support team</p>
-                    </div>
-                </button>
 
                 <a href="{{ route('student.support.contact') }}" 
                    class="bg-white overflow-hidden shadow-sm sm:rounded-lg hover:shadow-md transition-shadow">

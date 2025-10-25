@@ -1,13 +1,29 @@
-<x-teacher-layout>
-    <x-slot name="header">Enter Marks - {{ $exam->title }}</x-slot>
-    <div class="py-6">
-        <div class="max-w-7xl mx-auto">
+<x-app-layout>
+    <x-slot name="header">
+        <div class="flex justify-between items-center">
+            <div>
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                    {{ __('Enter Marks') }} - {{ $exam->title }}
+                </h2>
+                <p class="text-sm text-gray-600 mt-1">
+                    {{ $department->name ?? 'No Department Assigned' }}
+                </p>
+            </div>
+            <a href="{{ route('department-head.exams.show', $exam->id) }}" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
+                Back to Assessment
+            </a>
+        </div>
+    </x-slot>
+
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white p-6 rounded-lg shadow-sm">
-                <form method="POST" action="{{ route('teacher.exams.save-marks', $exam->id) }}">
+                <form method="POST" action="{{ route('department-head.exams.save-marks', $exam->id) }}">
                     @csrf
                     <div class="mb-4">
                         <h3 class="text-xl font-bold">{{ $exam->course->title }}</h3>
                         <p class="text-gray-600">Total Marks: {{ $exam->total_marks }}</p>
+                        <p class="text-sm text-gray-500">Teacher: {{ $exam->course->teacher->user->name ?? 'Not Assigned' }}</p>
                     </div>
                     <table class="min-w-full">
                         <thead><tr class="border-b"><th class="text-left py-2">Student Name</th><th class="text-left py-2">Student ID</th><th class="text-left py-2">Marks</th><th class="text-left py-2">Remarks</th></tr></thead>
@@ -27,7 +43,7 @@
                         </tbody>
                     </table>
                     <div class="mt-6 flex justify-end gap-2">
-                        <a href="{{ route('teacher.exams.show', $exam->id) }}" class="bg-gray-200 px-6 py-2 rounded">Cancel</a>
+                        <a href="{{ route('department-head.exams.show', $exam->id) }}" class="bg-gray-200 px-6 py-2 rounded">Cancel</a>
                         <button type="submit" name="save" class="bg-blue-600 text-white px-6 py-2 rounded">Save as Draft</button>
                         <button type="submit" name="publish" class="bg-green-600 text-white px-6 py-2 rounded">Save & Publish</button>
                     </div>
@@ -35,4 +51,4 @@
             </div>
         </div>
     </div>
-</x-teacher-layout>
+</x-app-layout>

@@ -33,19 +33,6 @@
                         <label class="block text-sm font-medium text-gray-700 mb-3">Payment Method *</label>
                         <div class="grid grid-cols-2 gap-4">
                             <label class="relative">
-                                <input type="radio" name="payment_method" value="bkash" class="sr-only" required>
-                                <div class="border-2 border-gray-200 rounded-lg p-4 cursor-pointer hover:border-blue-500 payment-method-option">
-                                    <div class="flex items-center">
-                                        <img src="https://via.placeholder.com/40x40/00A651/FFFFFF?text=bK" alt="bKash" class="w-10 h-10 rounded mr-3">
-                                        <div>
-                                            <h4 class="font-semibold">bKash</h4>
-                                            <p class="text-sm text-gray-500">Mobile Banking</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </label>
-                            
-                            <label class="relative">
                                 <input type="radio" name="payment_method" value="nagad" class="sr-only" required>
                                 <div class="border-2 border-gray-200 rounded-lg p-4 cursor-pointer hover:border-blue-500 payment-method-option">
                                     <div class="flex items-center">
@@ -164,7 +151,7 @@
         document.querySelectorAll('input[name="payment_method"]').forEach(radio => {
             radio.addEventListener('change', function() {
                 const phoneField = document.getElementById('phone-number-field');
-                const mobileMethods = ['bkash', 'nagad', 'rocket'];
+                const mobileMethods = ['nagad', 'rocket'];
                 
                 if (mobileMethods.includes(this.value)) {
                     phoneField.style.display = 'block';

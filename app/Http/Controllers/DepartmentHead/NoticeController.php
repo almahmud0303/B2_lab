@@ -21,8 +21,8 @@ class NoticeController extends Controller
             abort(404, 'Department head profile not found');
         }
 
-        $notices = Notice::with('user')
-            ->where('user_id', Auth::id())
+        $notices = Notice::with(['user', 'department'])
+            ->where('department_id', $departmentHead->department_id)
             ->where(function($query) use ($departmentHead) {
                 $query->whereJsonContains('target_roles', 'student')
                       ->orWhereJsonContains('target_roles', 'teacher')
@@ -77,6 +77,7 @@ class NoticeController extends Controller
         
         Notice::create([
             'user_id' => Auth::id(),
+            'department_id' => $departmentHead->department_id,
             'title' => $request->title,
             'content' => $request->content,
             'type' => $request->type,
@@ -102,8 +103,8 @@ class NoticeController extends Controller
             abort(404, 'Department head profile not found');
         }
 
-        // Ensure the notice belongs to this department head
-        if ($notice->user_id !== Auth::id()) {
+        // Ensure the notice belongs to this department
+        if ($notice->department_id !== $departmentHead->department_id) {
             abort(403, 'Unauthorized access to notice.');
         }
 
@@ -122,8 +123,8 @@ class NoticeController extends Controller
             abort(404, 'Department head profile not found');
         }
 
-        // Ensure the notice belongs to this department head
-        if ($notice->user_id !== Auth::id()) {
+        // Ensure the notice belongs to this department
+        if ($notice->department_id !== $departmentHead->department_id) {
             abort(403, 'Unauthorized access to notice.');
         }
 
@@ -141,8 +142,8 @@ class NoticeController extends Controller
             abort(404, 'Department head profile not found');
         }
 
-        // Ensure the notice belongs to this department head
-        if ($notice->user_id !== Auth::id()) {
+        // Ensure the notice belongs to this department
+        if ($notice->department_id !== $departmentHead->department_id) {
             abort(403, 'Unauthorized access to notice.');
         }
 
@@ -185,8 +186,8 @@ class NoticeController extends Controller
             abort(404, 'Department head profile not found');
         }
 
-        // Ensure the notice belongs to this department head
-        if ($notice->user_id !== Auth::id()) {
+        // Ensure the notice belongs to this department
+        if ($notice->department_id !== $departmentHead->department_id) {
             abort(403, 'Unauthorized access to notice.');
         }
 
@@ -205,8 +206,8 @@ class NoticeController extends Controller
             abort(404, 'Department head profile not found');
         }
 
-        // Ensure the notice belongs to this department head
-        if ($notice->user_id !== Auth::id()) {
+        // Ensure the notice belongs to this department
+        if ($notice->department_id !== $departmentHead->department_id) {
             abort(403, 'Unauthorized access to notice.');
         }
 

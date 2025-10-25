@@ -68,6 +68,23 @@
                                 @enderror
                             </div>
 
+                            <!-- Department -->
+                            <div>
+                                <label for="department_id" class="block text-sm font-medium text-gray-700">Department</label>
+                                <select id="department_id" name="department_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                    <option value="">All Departments</option>
+                                    @foreach(\App\Models\Department::all() as $department)
+                                        <option value="{{ $department->id }}" {{ old('department_id') == $department->id ? 'selected' : '' }}>
+                                            {{ $department->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('department_id')
+                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                                <p class="mt-1 text-sm text-gray-500">Leave empty to show notice to all departments</p>
+                            </div>
+
                             <!-- Target Roles -->
                             <div>
                                 <label for="target_roles" class="block text-sm font-medium text-gray-700">Target Roles</label>

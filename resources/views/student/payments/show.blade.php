@@ -59,9 +59,7 @@
                         <div>
                             <label class="block text-sm font-medium text-gray-500">Payment Method</label>
                             <div class="flex items-center">
-                                @if($payment->payment_method === 'bkash')
-                                    <img src="https://via.placeholder.com/20x20/00A651/FFFFFF?text=bK" alt="bKash" class="w-5 h-5 rounded mr-2">
-                                @elseif($payment->payment_method === 'nagad')
+                                @if($payment->payment_method === 'nagad')
                                     <img src="https://via.placeholder.com/20x20/E31837/FFFFFF?text=NG" alt="Nagad" class="w-5 h-5 rounded mr-2">
                                 @elseif($payment->payment_method === 'rocket')
                                     <img src="https://via.placeholder.com/20x20/FF6B35/FFFFFF?text=RT" alt="Rocket" class="w-5 h-5 rounded mr-2">

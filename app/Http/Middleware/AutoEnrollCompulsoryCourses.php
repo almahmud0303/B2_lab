@@ -23,15 +23,24 @@ class AutoEnrollCompulsoryCourses
         if ($user && $user->role === 'student' && $user->student) {
             $student = $user->student;
             
-            // Check if student has been auto-enrolled (use a flag or check enrollment count)
-            $hasCompulsoryCourses = $student->enrollments()
-                ->whereHas('course', function($query) {
-                    $query->where('course_type', 'compulsory');
-                })
-                ->exists();
+            // Check if student needs auto-enrollment for current year/semester
+            $currentCompulsoryCourses = Course::where('department_id', $student->department_id)
+                ->where('academic_year', $student->academic_year)
+                ->where('semester', $student->semester)
+                ->where('course_type', 'compulsory')
+                ->where('is_active', true)
+                ->count();
             
-            // If no compulsory courses enrolled, auto-enroll them
-            if (!$hasCompulsoryCourses) {
+            $enrolledCompulsoryCourses = $student->enrollments()
+                ->whereHas('course', function($query) use ($student) {
+                    $query->where('course_type', 'compulsory')
+                          ->where('academic_year', $student->academic_year)
+                          ->where('semester', $student->semester);
+                })
+                ->count();
+            
+            // If not all compulsory courses are enrolled, auto-enroll them
+            if ($enrolledCompulsoryCourses < $currentCompulsoryCourses) {
                 $this->autoEnrollCompulsoryCourses($student);
             }
         }
@@ -53,20 +62,18 @@ class AutoEnrollCompulsoryCourses
             ->get();
 
         foreach ($compulsoryCourses as $course) {
-            // Check if already enrolled
-            $exists = Enrollment::where('student_id', $student->id)
-                ->where('course_id', $course->id)
-                ->exists();
-
-            if (!$exists) {
-                Enrollment::create([
+            // Use updateOrCreate to prevent duplicate enrollments
+            Enrollment::updateOrCreate(
+                [
                     'student_id' => $student->id,
                     'course_id' => $course->id,
+                ],
+                [
                     'enrollment_date' => now(),
                     'status' => 'enrolled',
                     'grade' => null,
-                ]);
-            }
+                ]
+            );
         }
 
         // Log the auto-enrollment

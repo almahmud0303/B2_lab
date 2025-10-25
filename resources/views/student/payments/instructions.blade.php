@@ -24,36 +24,7 @@
 
             <!-- Payment Instructions -->
             <div class="bg-white p-6 rounded-lg shadow-sm mb-6">
-                @if($payment->payment_method === 'bkash')
-                    <div class="text-center mb-6">
-                        <img src="https://via.placeholder.com/80x80/00A651/FFFFFF?text=bK" alt="bKash" class="w-20 h-20 rounded mx-auto mb-4">
-                        <h3 class="text-xl font-bold text-gray-800">bKash Payment Instructions</h3>
-                    </div>
-                    
-                    <div class="bg-green-50 border border-green-200 rounded-lg p-6 mb-6">
-                        <h4 class="font-semibold text-green-800 mb-3">📱 How to Pay with bKash:</h4>
-                        <ol class="list-decimal list-inside space-y-2 text-green-700">
-                            <li>Open your bKash mobile app or dial *247#</li>
-                            <li>Select "Send Money"</li>
-                            <li>Enter the bKash merchant number: <strong>01XXXXXXXXX</strong></li>
-                            <li>Enter amount: <strong>{{ $payment->formatted_amount }}</strong></li>
-                            <li>Enter reference: <strong>{{ $payment->payment_id }}</strong></li>
-                            <li>Enter your bKash PIN to confirm</li>
-                            <li>Save the transaction ID for your records</li>
-                        </ol>
-                    </div>
-
-                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
-                        <h4 class="font-semibold text-yellow-800 mb-2">⚠️ Important Notes:</h4>
-                        <ul class="list-disc list-inside space-y-1 text-yellow-700">
-                            <li>Make sure to enter the exact amount: {{ $payment->formatted_amount }}</li>
-                            <li>Use this reference: {{ $payment->payment_id }}</li>
-                            <li>Keep the transaction ID safe</li>
-                            <li>Payment will be verified automatically</li>
-                        </ul>
-                    </div>
-
-                @elseif($payment->payment_method === 'nagad')
+                @if($payment->payment_method === 'nagad')
                     <div class="text-center mb-6">
                         <img src="https://via.placeholder.com/80x80/E31837/FFFFFF?text=NG" alt="Nagad" class="w-20 h-20 rounded mx-auto mb-4">
                         <h3 class="text-xl font-bold text-gray-800">Nagad Payment Instructions</h3>

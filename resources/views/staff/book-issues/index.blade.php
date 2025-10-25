@@ -25,8 +25,20 @@
                     <tbody>
                         @foreach($bookIssues as $issue)
                             <tr class="border-b">
-                                <td class="py-2">{{ $issue->student->user->name }}<br><span class="text-xs text-gray-500">{{ $issue->student->student_id }}</span></td>
-                                <td class="py-2">{{ Str::limit($issue->book->title, 40) }}</td>
+                                <td class="py-2">
+                                    @if($issue->student && $issue->student->user)
+                                        {{ $issue->student->user->name }}<br><span class="text-xs text-gray-500">{{ $issue->student->student_id }}</span>
+                                    @else
+                                        <span class="text-red-500">Student Not Found</span>
+                                    @endif
+                                </td>
+                                <td class="py-2">
+                                    @if($issue->book)
+                                        {{ Str::limit($issue->book->title, 40) }}
+                                    @else
+                                        <span class="text-red-500">Book Not Found</span>
+                                    @endif
+                                </td>
                                 <td class="py-2">{{ $issue->issue_date?->format('Y-m-d') }}</td>
                                 <td class="py-2">{{ $issue->due_date?->format('Y-m-d') }}</td>
                                 <td class="py-2"><span class="px-2 py-1 text-xs rounded {{ $issue->status == 'issued' ? 'bg-green-100 text-green-800' : ($issue->status == 'overdue' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800') }}">{{ ucfirst($issue->status) }}</span></td>

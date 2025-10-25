@@ -105,8 +105,12 @@
                                     @foreach($recentBookIssues as $issue)
                                         <tr class="hover:bg-gray-50">
                                             <td class="px-4 py-3 whitespace-nowrap">
-                                                <div class="text-sm font-medium text-gray-900">{{ $issue->student->user->name }}</div>
-                                                <div class="text-xs text-gray-500">{{ $issue->student->student_id }}</div>
+                                                @if($issue->student && $issue->student->user)
+                                                    <div class="text-sm font-medium text-gray-900">{{ $issue->student->user->name }}</div>
+                                                    <div class="text-xs text-gray-500">{{ $issue->student->student_id }}</div>
+                                                @else
+                                                    <div class="text-sm font-medium text-red-500">Student Not Found</div>
+                                                @endif
                                             </td>
                                             <td class="px-4 py-3">
                                                 <div class="text-sm text-gray-900">{{ Str::limit($issue->book->title, 30) }}</div>
@@ -150,7 +154,13 @@
                             @foreach($overdueBooks as $issue)
                                 <div class="flex items-center justify-between border-l-4 border-red-500 bg-red-50 p-4 rounded-r-lg">
                                     <div class="flex-1">
-                                        <h3 class="font-semibold text-gray-800 text-sm">{{ $issue->student->user->name }}</h3>
+                                        <h3 class="font-semibold text-gray-800 text-sm">
+                                            @if($issue->student && $issue->student->user)
+                                                {{ $issue->student->user->name }}
+                                            @else
+                                                <span class="text-red-500">Student Not Found</span>
+                                            @endif
+                                        </h3>
                                         <p class="text-sm text-gray-600 mt-1">{{ Str::limit($issue->book->title, 40) }}</p>
                                         <p class="text-xs text-red-600 mt-1">
                                             Due: {{ $issue->due_date->format('d M, Y') }}

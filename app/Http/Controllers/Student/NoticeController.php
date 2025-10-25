@@ -18,8 +18,12 @@ class NoticeController extends Controller
             abort(404, 'Student profile not found');
         }
 
-        // Get notices for students
+        // Get notices for students in their department
         $notices = Notice::where('is_published', true)
+            ->where(function($query) use ($student) {
+                $query->whereNull('department_id')
+                      ->orWhere('department_id', $student->department_id);
+            })
             ->where(function($query) {
                 $query->whereJsonContains('target_roles', 'student')
                       ->orWhereJsonContains('target_roles', 'all')
@@ -34,9 +38,13 @@ class NoticeController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(15);
 
-        // Get pinned notices
+        // Get pinned notices for students in their department
         $pinnedNotices = Notice::where('is_published', true)
             ->where('is_pinned', true)
+            ->where(function($query) use ($student) {
+                $query->whereNull('department_id')
+                      ->orWhere('department_id', $student->department_id);
+            })
             ->where(function($query) {
                 $query->whereJsonContains('target_roles', 'student')
                       ->orWhereJsonContains('target_roles', 'all')
@@ -50,8 +58,12 @@ class NoticeController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        // Get recent notices (last 7 days)
+        // Get recent notices (last 7 days) for students in their department
         $recentNotices = Notice::where('is_published', true)
+            ->where(function($query) use ($student) {
+                $query->whereNull('department_id')
+                      ->orWhere('department_id', $student->department_id);
+            })
             ->where(function($query) {
                 $query->whereJsonContains('target_roles', 'student')
                       ->orWhereJsonContains('target_roles', 'all')

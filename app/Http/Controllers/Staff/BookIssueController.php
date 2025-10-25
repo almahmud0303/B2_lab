@@ -249,4 +249,117 @@ class BookIssueController extends Controller
 
         return redirect()->back()->with('success', 'Book renewed successfully.');
     }
+
+    /**
+     * Show the form for creating a new book.
+     */
+    public function createBook()
+    {
+        $staff = Auth::user()->staff;
+        
+        if (!$staff) {
+            abort(404, 'Staff profile not found');
+        }
+
+        return view('staff.book-issues.create-book', compact('staff'));
+    }
+
+    /**
+     * Store a newly created book.
+     */
+    public function storeBook(Request $request)
+    {
+        $staff = Auth::user()->staff;
+        
+        if (!$staff) {
+            abort(404, 'Staff profile not found');
+        }
+
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'author' => 'required|string|max:255',
+            'isbn' => 'required|string|max:50|unique:books',
+            'publisher' => 'nullable|string|max:255',
+            'publication_year' => 'nullable|integer|min:1800|max:' . date('Y'),
+            'category' => 'required|string|max:100',
+            'total_copies' => 'required|integer|min:1',
+            'available_copies' => 'required|integer|min:0',
+            'shelf_location' => 'nullable|string|max:100',
+            'description' => 'nullable|string',
+        ]);
+
+        Book::create($request->all());
+
+        return redirect()->route('staff.book-issues.index')->with('success', 'Book added successfully.');
+    }
+
+    /**
+     * Show the form for editing a book.
+     */
+    public function editBook($id)
+    {
+        $staff = Auth::user()->staff;
+        
+        if (!$staff) {
+            abort(404, 'Staff profile not found');
+        }
+
+        $book = Book::findOrFail($id);
+
+        return view('staff.book-issues.edit-book', compact('book', 'staff'));
+    }
+
+    /**
+     * Update the specified book.
+     */
+    public function updateBook(Request $request, $id)
+    {
+        $staff = Auth::user()->staff;
+        
+        if (!$staff) {
+            abort(404, 'Staff profile not found');
+        }
+
+        $book = Book::findOrFail($id);
+
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'author' => 'required|string|max:255',
+            'isbn' => 'required|string|max:50|unique:books,isbn,' . $book->id,
+            'publisher' => 'nullable|string|max:255',
+            'publication_year' => 'nullable|integer|min:1800|max:' . date('Y'),
+            'category' => 'required|string|max:100',
+            'total_copies' => 'required|integer|min:1',
+            'available_copies' => 'required|integer|min:0',
+            'shelf_location' => 'nullable|string|max:100',
+            'description' => 'nullable|string',
+        ]);
+
+        $book->update($request->all());
+
+        return redirect()->route('staff.book-issues.index')->with('success', 'Book updated successfully.');
+    }
+
+    /**
+     * Remove the specified book.
+     */
+    public function destroyBook($id)
+    {
+        $staff = Auth::user()->staff;
+        
+        if (!$staff) {
+            abort(404, 'Staff profile not found');
+        }
+
+        $book = Book::findOrFail($id);
+
+        // Check if book has active issues
+        if ($book->bookIssues()->whereIn('status', ['issued', 'overdue'])->count() > 0) {
+            return redirect()->back()->with('error', 'Cannot delete book with active issues.');
+        }
+
+        $book->delete();
+
+        return redirect()->route('staff.book-issues.index')->with('success', 'Book deleted successfully.');
+    }
 }
