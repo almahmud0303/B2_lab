@@ -1,18 +1,15 @@
 <x-app-layout>
-    <!-- Include print stylesheet -->
-    <link rel="stylesheet" href="{{ asset('css/credentials-print.css') }}" media="print">
-    
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Student Credentials - ' . $student->user->name) }}
+                {{ __('Staff Credentials - ' . $staff->user->name) }}
             </h2>
             <div class="flex space-x-2">
                 <button onclick="printCredentials()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                     🖨️ Print Credentials
                 </button>
-                <a href="{{ route('admin.students.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-                    Back to Students
+                <a href="{{ route('admin.staff.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                    Back to Staff List
                 </a>
             </div>
         </div>
@@ -29,8 +26,8 @@
                         </svg>
                     </div>
                     <div>
-                        <p class="font-bold">Student Created Successfully!</p>
-                        <p class="text-sm">Please save or print these credentials for the student.</p>
+                        <p class="font-bold">Staff Member Created Successfully!</p>
+                        <p class="text-sm">Please save or print these credentials for the staff member.</p>
                     </div>
                 </div>
             </div>
@@ -41,42 +38,34 @@
                     <!-- Header -->
                     <div class="text-center mb-8">
                         <h1 class="text-3xl font-bold text-gray-900 mb-2">University Management System</h1>
-                        <h2 class="text-xl text-gray-600">Student Login Credentials</h2>
+                        <h2 class="text-xl text-gray-600">Staff Login Credentials</h2>
                         <div class="mt-4 border-t border-gray-300"></div>
                     </div>
 
-                    <!-- Student Information -->
+                    <!-- Staff Information -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                         <div>
-                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Student Information</h3>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Staff Information</h3>
                             <div class="space-y-3">
                                 <div class="flex justify-between">
                                     <span class="font-medium text-gray-600">Full Name:</span>
-                                    <span class="text-gray-900">{{ $student->user->name }}</span>
+                                    <span class="text-gray-900">{{ $staff->user->name }}</span>
                                 </div>
                                 <div class="flex justify-between">
-                                    <span class="font-medium text-gray-600">Student ID:</span>
-                                    <span class="text-gray-900 font-mono">{{ $student->student_id }}</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="font-medium text-gray-600">Admission Number:</span>
-                                    <span class="text-gray-900 font-mono">{{ $student->admission_number }}</span>
+                                    <span class="font-medium text-gray-600">Staff ID:</span>
+                                    <span class="text-gray-900 font-mono">{{ $staff->staff_id }}</span>
                                 </div>
                                 <div class="flex justify-between">
                                     <span class="font-medium text-gray-600">Department:</span>
-                                    <span class="text-gray-900">{{ $student->department->name ?? 'Not Assigned' }}</span>
+                                    <span class="text-gray-900">{{ $staff->department->name ?? 'Not Assigned' }}</span>
                                 </div>
                                 <div class="flex justify-between">
-                                    <span class="font-medium text-gray-600">Academic Year:</span>
-                                    <span class="text-gray-900">{{ $student->academic_year ?? 'Not Set' }}</span>
+                                    <span class="font-medium text-gray-600">Position:</span>
+                                    <span class="text-gray-900">{{ $staff->position }}</span>
                                 </div>
                                 <div class="flex justify-between">
-                                    <span class="font-medium text-gray-600">Semester:</span>
-                                    <span class="text-gray-900">{{ $student->semester ?? 'Not Set' }}</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="font-medium text-gray-600">Admission Date:</span>
-                                    <span class="text-gray-900">{{ $student->admission_date?->format('M d, Y') ?? 'Not Set' }}</span>
+                                    <span class="font-medium text-gray-600">Join Date:</span>
+                                    <span class="text-gray-900">{{ $staff->join_date?->format('M d, Y') ?? 'Not Set' }}</span>
                                 </div>
                             </div>
                         </div>
@@ -112,10 +101,10 @@
                                 <h3 class="text-sm font-medium text-yellow-800">Important Instructions</h3>
                                 <div class="mt-2 text-sm text-yellow-700">
                                     <ul class="list-disc list-inside space-y-1">
-                                        <li>Please provide these credentials to the student securely</li>
-                                        <li>Student should change their password after first login</li>
+                                        <li>Please provide these credentials to the staff member securely</li>
+                                        <li>Staff member should change their password after first login</li>
                                         <li>Keep this information confidential and do not share publicly</li>
-                                        <li>Student can access their dashboard at: <span class="font-mono">{{ url('/login') }}</span></li>
+                                        <li>Staff can access their dashboard at: <span class="font-mono">{{ url('/login') }}</span></li>
                                     </ul>
                                 </div>
                             </div>
@@ -136,11 +125,11 @@
                             </svg>
                             Copy to Clipboard
                         </button>
-                        <a href="{{ route('admin.students.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg flex items-center">
+                        <a href="{{ route('admin.staff.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg flex items-center">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                             </svg>
-                            Back to Students
+                            Back to Staff List
                         </a>
                     </div>
                 </div>
@@ -149,27 +138,30 @@
             <!-- Footer -->
             <div class="text-center text-sm text-gray-500">
                 <p>Generated on {{ now()->format('F d, Y \a\t g:i A') }}</p>
-                <p>University Management System - Student Credentials</p>
+                <p>University Management System - Staff Credentials</p>
             </div>
         </div>
     </div>
 
+    <!-- Include print stylesheet -->
+    <link rel="stylesheet" href="{{ asset('css/credentials-print.css') }}" media="print">
+
     <script>
-    function printCredentials() {
-        window.print();
-    }        function copyCredentials() {
+        function printCredentials() {
+            window.print();
+        }
+
+        function copyCredentials() {
             const credentials = `
-Student Login Credentials
+Staff Login Credentials
 ========================
 
-Student Information:
-- Name: {{ $student->user->name }}
-- Student ID: {{ $student->student_id }}
-- Admission Number: {{ $student->admission_number }}
-- Department: {{ $student->department->name ?? 'Not Assigned' }}
-- Academic Year: {{ $student->academic_year ?? 'Not Set' }}
-- Semester: {{ $student->semester ?? 'Not Set' }}
-- Admission Date: {{ $student->admission_date?->format('M d, Y') ?? 'Not Set' }}
+Staff Information:
+- Name: {{ $staff->user->name }}
+- Staff ID: {{ $staff->staff_id }}
+- Department: {{ $staff->department->name ?? 'Not Assigned' }}
+- Position: {{ $staff->position }}
+- Join Date: {{ $staff->join_date?->format('M d, Y') ?? 'Not Set' }}
 
 Login Credentials:
 - Email: {{ session('credentials.email') }}
@@ -177,7 +169,7 @@ Login Credentials:
 - Login URL: {{ url('/login') }}
 
 Instructions:
-- Student should change password after first login
+- Staff member should change password after first login
 - Keep credentials confidential
 - Access dashboard at: {{ url('/login') }}
 

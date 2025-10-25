@@ -59,7 +59,7 @@
                                 </div>
                                 <div>
                                     <dt class="text-sm font-medium text-gray-500">Price</dt>
-                                    <dd class="text-lg text-gray-900">${{ number_format($book->price ?? 0, 2) }}</dd>
+                                    <dd class="text-lg text-gray-900">৳{{ number_format($book->price ?? 0, 2) }}</dd>
                                 </div>
                             </div>
 

@@ -95,7 +95,8 @@
                                 <p><strong>Code:</strong> {{ Auth::user()->student->department->code }}</p>
                                 <p><strong>Building:</strong> {{ Auth::user()->student->department->building ?? 'Academic Building' }}</p>
                                 @if(Auth::user()->student->department->head)
-                                    <p><strong>Head of Department:</strong> {{ Auth::user()->student->department->head }}</p>
+                                    <p><strong>Head of Department:</strong> {{ Auth::user()->student->department->head->name }}</p>
+                                    <p class="text-xs text-gray-500">{{ Auth::user()->student->department->head->email }}</p>
                                 @endif
                             </div>
                         </div>

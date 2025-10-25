@@ -22,9 +22,9 @@
                             <p class="text-sm text-gray-500">Location: <span class="px-2 py-1 rounded {{ $staff->location == 'library' ? 'bg-blue-100 text-blue-800' : ($staff->location == 'administration' ? 'bg-purple-100 text-purple-800' : 'bg-green-100 text-green-800') }}">{{ ucfirst($staff->location) }}</span></p>
                         </div>
                     </div>
-                    <div class="flex flex-col space-y-2">
-                        <a href="{{ route('staff.profile.edit') }}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded">Edit Profile</a>
-                        <a href="{{ route('staff.profile.change-password') }}" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded">Change Password</a>
+                    <div class="flex space-x-2">
+                        <a href="{{ route('staff.profile.edit') }}" class="bg-green-600 hover:bg-green-700 text-white text-sm py-1 px-3 rounded">Edit Profile</a>
+                        <a href="{{ route('staff.profile.change-password') }}" class="bg-gray-600 hover:bg-gray-700 text-white text-sm py-1 px-3 rounded">Change Password</a>
                     </div>
                 </div>
             </div>

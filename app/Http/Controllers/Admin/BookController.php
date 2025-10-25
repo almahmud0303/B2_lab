@@ -11,9 +11,7 @@ use Illuminate\Validation\Rule;
 
 class BookController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+// Display the all  books
     public function index()
     {
         $books = Book::with(['bookIssues.student.user'])

@@ -96,7 +96,7 @@ class StaffController extends Controller
                 'is_active' => true,
             ]);
 
-            Staff::create([
+            $staff = Staff::create([
                 'user_id' => $user->id,
                 'department_id' => $request->department_id,
                 'employee_id' => $request->employee_id,
@@ -111,7 +111,12 @@ class StaffController extends Controller
             ]);
 
             DB::commit();
-            return redirect()->route('admin.staff.index')->with('success', 'Staff member created successfully.');
+            // Store credentials in session for the credentials page
+            session()->flash('credentials.email', $request->email);
+            session()->flash('credentials.password', $request->password);
+            
+            // Redirect to credentials page
+            return redirect()->route('admin.staff.credentials', $staff->id)->with('success', 'Staff member created successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Error creating staff: ' . $e->getMessage())->withInput();
@@ -185,6 +190,12 @@ class StaffController extends Controller
             DB::rollBack();
             return redirect()->back()->with('error', 'Error updating staff: ' . $e->getMessage())->withInput();
         }
+    }
+
+    public function credentials($id)
+    {
+        $staff = Staff::with('user', 'department')->findOrFail($id);
+        return view('admin.staff.credentials', compact('staff'));
     }
 
     public function destroy($id)

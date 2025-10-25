@@ -123,6 +123,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin', 'preve
     Route::resource('notices', NoticeController::class);
     Route::patch('notices/{notice}/publish', [NoticeController::class, 'publish'])->name('notices.publish');
     Route::resource('staff', \App\Http\Controllers\Admin\StaffController::class);
+    Route::get('staff/{staff}/credentials', [\App\Http\Controllers\Admin\StaffController::class, 'credentials'])->name('staff.credentials');
     
     // Hall Management Routes
     Route::resource('halls', \App\Http\Controllers\Admin\HallController::class);

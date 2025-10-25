@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('My Courses') }}
             </h2>
-            <a href="{{ route('student.courses.catalog') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+            <a href="{{ route('student.courses.catalog') }}" class="bg-green-500 hover:bg-green-700 text-white text-sm py-1 px-3 rounded">
                 Browse Optional Courses
             </a>
         </div>

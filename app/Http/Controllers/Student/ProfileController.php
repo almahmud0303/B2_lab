@@ -144,7 +144,7 @@ class ProfileController extends Controller
         }
 
         // Load student with relationships
-        $student->load(['user', 'department']);
+        $student->load(['user', 'department.head']);
 
         return view('student.profile.academic', compact('student'));
     }

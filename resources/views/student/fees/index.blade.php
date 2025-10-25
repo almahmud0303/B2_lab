@@ -29,7 +29,7 @@
                             <div class="ml-5 w-0 flex-1">
                                 <dl>
                                     <dt class="text-sm font-medium text-gray-500 truncate">Total Fees</dt>
-                                    <dd class="text-lg font-medium text-gray-900">${{ number_format($totalFees, 2) }}</dd>
+                                    <dd class="text-lg font-medium text-gray-900">৳{{ number_format($totalFees, 2) }}</dd>
                                 </dl>
                             </div>
                         </div>
@@ -47,7 +47,7 @@
                             <div class="ml-5 w-0 flex-1">
                                 <dl>
                                     <dt class="text-sm font-medium text-gray-500 truncate">Paid Fees</dt>
-                                    <dd class="text-lg font-medium text-gray-900">${{ number_format($paidFees, 2) }}</dd>
+                                    <dd class="text-lg font-medium text-gray-900">৳{{ number_format($paidFees, 2) }}</dd>
                                 </dl>
                             </div>
                         </div>
@@ -65,7 +65,7 @@
                             <div class="ml-5 w-0 flex-1">
                                 <dl>
                                     <dt class="text-sm font-medium text-gray-500 truncate">Pending Fees</dt>
-                                    <dd class="text-lg font-medium text-gray-900">${{ number_format($pendingFees, 2) }}</dd>
+                                    <dd class="text-lg font-medium text-gray-900">৳{{ number_format($pendingFees, 2) }}</dd>
                                 </dl>
                             </div>
                         </div>
@@ -83,7 +83,7 @@
                             <div class="ml-5 w-0 flex-1">
                                 <dl>
                                     <dt class="text-sm font-medium text-gray-500 truncate">Overdue Fees</dt>
-                                    <dd class="text-lg font-medium text-gray-900">${{ number_format($overdueFees, 2) }}</dd>
+                                    <dd class="text-lg font-medium text-gray-900">৳{{ number_format($overdueFees, 2) }}</dd>
                                 </dl>
                             </div>
                         </div>
@@ -118,9 +118,9 @@
                                                 @endif
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                                ${{ number_format($fee->amount, 2) }}
+                                                ৳{{ number_format($fee->amount, 2) }}
                                                 @if($fee->paid_amount > 0)
-                                                    <div class="text-xs text-green-600">Paid: ${{ number_format($fee->paid_amount, 2) }}</div>
+                                                    <div class="text-xs text-green-600">Paid: ৳{{ number_format($fee->paid_amount, 2) }}</div>
                                                 @endif
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
@@ -204,7 +204,7 @@
                         <div class="ml-3">
                             <h3 class="text-sm font-medium text-red-800">Payment Overdue</h3>
                             <div class="mt-2 text-sm text-red-700">
-                                <p>You have overdue fees totaling ${{ number_format($overdueFees, 2) }}. Please make payment as soon as possible to avoid any penalties.</p>
+                                <p>You have overdue fees totaling ৳{{ number_format($overdueFees, 2) }}. Please make payment as soon as possible to avoid any penalties.</p>
                             </div>
                         </div>
                     </div>

@@ -4,11 +4,11 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Library Catalog') }}
             </h2>
-            <div class="flex space-x-3">
-                <a href="{{ route('student.library.my-books') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            <div class="flex space-x-2">
+                <a href="{{ route('student.library.my-books') }}" class="bg-blue-500 hover:bg-blue-700 text-white text-sm py-1 px-3 rounded">
                     My Books
                 </a>
-                <!-- <a href="{{ route('student.library.history') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                <!-- <a href="{{ route('student.library.history') }}" class="bg-gray-500 hover:bg-gray-700 text-white text-sm py-1 px-3 rounded">
                     History
                 </a> -->
             </div>
@@ -222,7 +222,7 @@
                             <ul class="list-disc list-inside space-y-1">
                                 <li>Maximum 5 books per student</li>
                                 <li>14 days loan period</li>
-                                <li>$1 per day fine for overdue books</li>
+                                <li>৳1 per day fine for overdue books</li>
                                 <li>Books cannot be issued if you have overdue books</li>
                             </ul>
                         </div>
