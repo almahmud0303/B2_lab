@@ -104,6 +104,11 @@ class NoticeController extends Controller
             abort(403, 'You do not have access to this notice');
         }
 
+        // Check department access - students can only see notices from their department or general notices
+        if ($notice->department_id !== null && $notice->department_id !== $student->department_id) {
+            abort(403, 'You do not have access to this notice');
+        }
+
         // Load notice with relationships
         $notice->load('user');
 
@@ -111,6 +116,10 @@ class NoticeController extends Controller
         $relatedNotices = Notice::where('is_published', true)
             ->where('id', '!=', $notice->id)
             ->where('type', $notice->type)
+            ->where(function($query) use ($student) {
+                $query->whereNull('department_id')
+                      ->orWhere('department_id', $student->department_id);
+            })
             ->where(function($query) {
                 $query->whereJsonContains('target_roles', 'student')
                       ->orWhereJsonContains('target_roles', 'all')
@@ -142,6 +151,10 @@ class NoticeController extends Controller
 
         $notices = Notice::where('is_published', true)
             ->where('type', $type)
+            ->where(function($query) use ($student) {
+                $query->whereNull('department_id')
+                      ->orWhere('department_id', $student->department_id);
+            })
             ->where(function($query) {
                 $query->whereJsonContains('target_roles', 'student')
                       ->orWhereJsonContains('target_roles', 'all')
@@ -169,6 +182,10 @@ class NoticeController extends Controller
 
         $urgentNotices = Notice::where('is_published', true)
             ->where('priority', 'urgent')
+            ->where(function($query) use ($student) {
+                $query->whereNull('department_id')
+                      ->orWhere('department_id', $student->department_id);
+            })
             ->where(function($query) {
                 $query->whereJsonContains('target_roles', 'student')
                       ->orWhereJsonContains('target_roles', 'all')
@@ -197,6 +214,10 @@ class NoticeController extends Controller
         $priority = $request->get('priority');
 
         $notices = Notice::where('is_published', true)
+            ->where(function($query) use ($student) {
+                $query->whereNull('department_id')
+                      ->orWhere('department_id', $student->department_id);
+            })
             ->where(function($q) use ($query) {
                 if ($query) {
                     $q->where('title', 'like', "%{$query}%")

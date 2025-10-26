@@ -47,6 +47,17 @@ class NoticeController extends Controller
 
         $notice = Notice::where('is_published', true)->findOrFail($id);
 
+        // Check department access - teachers can only see notices from their department or general notices
+        if ($notice->department_id !== null && $notice->department_id !== $teacher->department_id) {
+            abort(403, 'You do not have access to this notice');
+        }
+
+        // Check if notice is targeted to teachers
+        $targetRoles = $notice->target_roles ?? [];
+        if (!empty($targetRoles) && !in_array('teacher', $targetRoles) && !in_array('all', $targetRoles)) {
+            abort(403, 'You do not have access to this notice');
+        }
+
         return view('teacher.notices.show', compact('notice', 'teacher'));
     }
 }

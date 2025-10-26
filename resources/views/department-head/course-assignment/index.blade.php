@@ -13,27 +13,32 @@
 
             <!-- Filters -->
             <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
-                <form method="GET" class="flex gap-4">
-                    <select name="academic_year" class="border rounded px-4 py-2">
+                <form method="GET" action="{{ route('department-head.course-assignment.index') }}" class="flex gap-4">
+                    <select name="academic_year" class="border rounded px-4 py-2" onchange="this.form.submit()">
                         <option value="">All Years</option>
                         <option value="1st" {{ request('academic_year') == '1st' ? 'selected' : '' }}>1st Year</option>
                         <option value="2nd" {{ request('academic_year') == '2nd' ? 'selected' : '' }}>2nd Year</option>
                         <option value="3rd" {{ request('academic_year') == '3rd' ? 'selected' : '' }}>3rd Year</option>
                         <option value="4th" {{ request('academic_year') == '4th' ? 'selected' : '' }}>4th Year</option>
                     </select>
-                    <select name="semester" class="border rounded px-4 py-2">
+                    <select name="semester" class="border rounded px-4 py-2" onchange="this.form.submit()">
                         <option value="">All Semesters</option>
-                        @for($i = 1; $i <= 8; $i++)
-                            <option value="{{ $i }}st" {{ request('semester') == $i.'st' ? 'selected' : '' }}>Semester {{ $i }}</option>
-                        @endfor
+                        <option value="1st" {{ request('semester') == '1st' ? 'selected' : '' }}>1st Semester</option>
+                        <option value="2nd" {{ request('semester') == '2nd' ? 'selected' : '' }}>2nd Semester</option>
+                        <option value="3rd" {{ request('semester') == '3rd' ? 'selected' : '' }}>3rd Semester</option>
+                        <option value="4th" {{ request('semester') == '4th' ? 'selected' : '' }}>4th Semester</option>
+                        <option value="5th" {{ request('semester') == '5th' ? 'selected' : '' }}>5th Semester</option>
+                        <option value="6th" {{ request('semester') == '6th' ? 'selected' : '' }}>6th Semester</option>
+                        <option value="7th" {{ request('semester') == '7th' ? 'selected' : '' }}>7th Semester</option>
+                        <option value="8th" {{ request('semester') == '8th' ? 'selected' : '' }}>8th Semester</option>
                     </select>
-                    <select name="status" class="border rounded px-4 py-2">
+                    <select name="status" class="border rounded px-4 py-2" onchange="this.form.submit()">
                         <option value="">All Courses</option>
                         <option value="assigned" {{ request('status') == 'assigned' ? 'selected' : '' }}>Assigned</option>
                         <option value="unassigned" {{ request('status') == 'unassigned' ? 'selected' : '' }}>Unassigned</option>
                     </select>
-                    <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded">Filter</button>
-                    <a href="{{ route('department-head.course-assignment.workload-report') }}" class="bg-purple-600 text-white px-6 py-2 rounded">Workload Report</a>
+                    <a href="{{ route('department-head.course-assignment.index') }}" class="bg-gray-600 text-white px-6 py-2 rounded hover:bg-gray-700">Clear Filters</a>
+                    <a href="{{ route('department-head.course-assignment.workload-report') }}" class="bg-purple-600 text-white px-6 py-2 rounded hover:bg-purple-700">Workload Report</a>
                 </form>
             </div>
 
