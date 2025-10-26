@@ -190,14 +190,19 @@
                 <!-- Recent Notices -->
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6">
-                        <h3 class="text-lg font-medium text-gray-900 mb-4">Recent Notices</h3>
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-medium text-gray-900">Recent Notices</h3>
+                            <a href="{{ route('student.notices.index') }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                View All →
+                            </a>
+                        </div>
                         <div class="space-y-3">
                             @forelse($recentNotices as $notice)
-                                <div class="p-3 bg-yellow-50 rounded-lg">
+                                <a href="{{ route('student.notices.show', $notice) }}" class="block p-3 bg-yellow-50 rounded-lg hover:bg-yellow-100 transition-colors">
                                     <p class="font-medium text-gray-900">{{ $notice->title }}</p>
                                     <p class="text-sm text-gray-600 mt-1">{{ Str::limit($notice->content, 100) }}</p>
                                     <p class="text-xs text-gray-500 mt-2">{{ $notice->created_at->diffForHumans() }}</p>
-                                </div>
+                                </a>
                             @empty
                                 <p class="text-sm text-gray-500">No recent notices found.</p>
                             @endforelse

@@ -90,7 +90,8 @@
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Target Roles</label>
                                 <div class="space-y-2">
                                     @php
-                                        $selectedRoles = old('target_roles', $notice->target_roles ?? []);
+                                        $selectedRoles = old('target_roles', is_array($notice->target_roles) ? $notice->target_roles : (is_string($notice->target_roles) ? json_decode($notice->target_roles, true) : []));
+                                        $selectedRoles = is_array($selectedRoles) ? $selectedRoles : [];
                                     @endphp
                                     <div class="flex items-center">
                                         <input type="checkbox" name="target_roles[]" id="role_student" value="student"
